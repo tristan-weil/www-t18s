@@ -1,0 +1,106 @@
+####################
+# common
+####################
+baseURL = "https://www.t18s.fr"
+
+title = "(╯°□°）╯︵ t18s.fr"
+theme = "hugo-theme-learn"
+
+# Allow templates of robots.txt
+enableRobotsTXT = true
+
+# Enable .GitInfo object for each page
+enableGitInfo = false
+
+# Enable Emoji emoticons support for page content
+enableEmoji = true
+
+####################
+# language
+####################
+
+# Language Code
+languageCode = "en-US"
+
+# Language settings
+contentDir = "content/en"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+
+
+####################
+# params
+####################
+
+[params]
+# Prefix URL to edit current page. Will display an "Edit this page" button on top right hand corner of every page.
+# Useful to give opportunity to people to create merge request for your doc.
+# See the config.toml file from this documentation site to have an example.
+editURL = ""
+# Author of the site, will be used in meta information
+author = "Tristan Weil"
+# Description of the site, will be used in meta information
+description = "(╯°□°）╯︵ t18s.fr"
+# Shows a checkmark for visited pages on the menu
+showVisitedLinks = false
+# Disable search function. It will hide search bar
+disableSearch = false
+# Javascript and CSS cache are automatically busted when new version of site is generated.
+# Set this to true to disable this behavior (some proxies don't handle well this optimization)
+disableAssetsBusting = false
+# Set this to true to disable copy-to-clipboard button for inline code.
+disableInlineCopyToClipBoard = false
+# A title for shortcuts in menu is set by default. Set this to true to disable it.
+disableShortcutsTitle = false
+# When using mulitlingual website, disable the switch language button.
+disableLanguageSwitchingButton = false
+# Hide breadcrumbs in the header and only show the current page title
+disableBreadcrumb = false
+# Hide Next and Previous page buttons normally displayed full height beside content
+disableNextPrev = true
+# Order sections in menu by "weight" or "title". Default to "weight"
+ordersectionsby = "weight"
+# Change default color scheme with a variant one. Can be "red", "blue", "green".
+themeVariant = "blue"
+# Provide a list of custom css files to load relative from the `static/` folder in the site root.
+custom_css = ["css/theme.css"]
+
+####################
+# outputs
+####################
+
+[outputs]
+home = [ "HTML", "JSON"]
+
+####################
+# menu
+####################
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-github'></i>&nbsp;Github"
+identifier = "github"
+url = "https://github.com/tristan-weil"
+weight = 11
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-link'></i>&nbsp;gopher://gopher.t18s.fr"
+identifier = "gopher"
+url = "gopher://gopher.t18s.fr"
+weight = 12
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-hand-spock'></i>&nbsp;finger @finger.t18s.fr"
+identifier = "finger"
+url = "finger://home@finger.t18s.fr"
+weight = 13
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-linkedin'></i>&nbsp;LinkedIn"
+identifier = "linkedin"
+url = "https://www.linkedin.com/in/tristan-weil/en"
+weight = 14
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-bullhorn'></i>&nbsp;<b>hire me!</b>"
+url = "/about-me"
+weight = 15

@@ -1,0 +1,44 @@
+---
+
+name: build
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '!refs/tags/*'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  static-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Hugo
+        env:
+          HUGO_VERSION: 0.76.4
+          HUGO_CHECKSUM: 723d36ad66082d1beef80a750277aff58de71eaae2d0fca7df6de737eec64e26
+        run: |
+          curl --output /tmp/hugo.tar.gz -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz"
+          echo "${HUGO_CHECKSUM}  /tmp/hugo.tar.gz" | sha256sum -c
+          tar -xvzf /tmp/hugo.tar.gz -C /tmp hugo
+          rm -f /tmp/hugo.tar.gz
+          chmod +x /tmp/hugo
+          /tmp/hugo version
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout theme
+        uses: actions/checkout@v2
+        with:
+          repository: tristan-weil/hugo-theme-learn
+          ref: master
+          path: themes/hugo-theme-learn
+
+      - name: Build Static Pages
+        run: |
+          /tmp/hugo --minify

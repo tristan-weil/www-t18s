@@ -1,0 +1,6 @@
+{{ if .Params.rssLink -}}
+    {{ $title := (.Params.rssLinkTitle | default (printf "%s :: %s " $.Site.Title $.Title)) -}}
+    {{ with .OutputFormats.Get "rss" -}}
+        {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $title | safeHTML }}
+    {{ end -}}
+{{ end -}}

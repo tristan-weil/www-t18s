@@ -1,0 +1,88 @@
+---
+
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  static-pages:
+    if: github.event.base_ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Hugo
+        env:
+          HUGO_VERSION: 0.76.4
+          HUGO_CHECKSUM: 723d36ad66082d1beef80a750277aff58de71eaae2d0fca7df6de737eec64e26
+        run: |
+          curl --output /tmp/hugo.tar.gz -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz"
+          echo "${HUGO_CHECKSUM}  /tmp/hugo.tar.gz" | sha256sum -c
+          tar -xvzf /tmp/hugo.tar.gz -C /tmp hugo
+          rm -f /tmp/hugo.tar.gz
+          chmod +x /tmp/hugo
+          /tmp/hugo version
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout theme
+        uses: actions/checkout@v2
+        with:
+          repository: tristan-weil/hugo-theme-learn
+          ref: master
+          path: themes/hugo-theme-learn
+
+      - name: Build Static Pages
+        run: |
+          /tmp/hugo --minify
+
+      - name: Store results
+        uses: actions/upload-artifact@v2
+        with:
+          name: static-pages
+          path: public
+
+  docker-image:
+    needs: static-pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download results
+        uses: actions/download-artifact@v2
+        with:
+          name: static-pages
+          path: public
+
+      - name: Get the tag version
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Docker Build and Push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          push: true
+          pull: true
+          tags: |
+            ghcr.io/tristan-weil/www-t18s/nginx:latest
+            ghcr.io/tristan-weil/www-t18s/nginx:${{steps.vars.outputs.tag}}
