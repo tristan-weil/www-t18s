@@ -91,3 +91,11 @@ For logs on stderr:
 {{< highlight shell >}}
 nomad alloc logs -f -stderr <alloc id>
 {{< /highlight >}}
+
+## Some screenshots
+
+You should end with everything working together:
+
+!["Consul"](/images/projects/bi/consul.png)
+
+!["Traefik dashboard"](/images/projects/bi/traefik_dashboard.png)
