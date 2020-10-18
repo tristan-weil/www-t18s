@@ -8,6 +8,10 @@ weight: 1
 disableToc: true
 ---
 
+## {{< icon "fas fa-broom" >}}&nbsp;2020-10-18
+
+The [Big Infra - Part 1]({{< relref "/projects/big-infra" >}}) guide is far more complete. 
+
 ## {{< icon "fas fa-hammer" >}}&nbsp;2020-10-11
 
 New version of the site:

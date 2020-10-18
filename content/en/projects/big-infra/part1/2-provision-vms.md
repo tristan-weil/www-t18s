@@ -2,10 +2,16 @@
 title: "2. Provision the VMs"
 menuTitle: "2. Provision the VMs"
 description: "Provision the VMs"
-weight: 12
+weight: 2
 ---
 
 {{< toc >}}
+
+## What I want?
+
+The VMs are up and running, now I need to provision them.
+
+## How?
 
 For this first attempt to build this infrastructure, I'll use [Ansible](https://www.ansible.com) to provision all the VMs.
 
@@ -16,7 +22,7 @@ I really like Ansible because:
 
 I use the different roles and playbooks you can found on my [GitHub](https://github.com/tristan-weil).
 
-## Provision the Bastion
+## The Bastion
 
 The bastion machine will be the first to be installed because we will then use it as the only entrance to others machines
 (see [SSH ProxyJump]({{< relref "/tips/ssh/proxy-jump" >}}))
@@ -25,7 +31,7 @@ The bastion machine will be the first to be installed because we will then use i
 Note that I push the [SSHFP]({{< relref "/tips/ssh/sshfp" >}}) record of the bastion host to my DNS registrar.
 {{% /notice %}}
 
-## Provision the VMs
+## The VMs
 
 The provisioning has 2 steps:
 - the first one:
@@ -39,7 +45,7 @@ Even if the Internet facing SSH port is only closed at the end, the VMs are prov
 - to avoid the final network cut
 - to be able to validate completely this "path" in order to be confident for further deployments
 
-So I needed to override the `ansible_ssh_common_args` variable for all my hosts:
+So we need to override the `ansible_ssh_common_args` variable for all my hosts:
 
 {{< highlight yaml >}}
 ansible_ssh_common_args: "-o StrictHostKeyChecking=accept-new {% if ansible_host == bi_internal_ip %}-o ProxyCommand=\"ssh -W %h:%p -i {{ bi_proxyjump_privkey }} -q proxyjump@{{ hostvars[ groups['bastion'] | first ]['bi_external_ip'] }}\"{% endif %}"
@@ -66,6 +72,8 @@ I have installed a DNS server because:
 - I need to make the services find each other
 - I want to have a DNS resolver for my infrastructure
 
-Each new provisioned VM will register itself in the DNS server using [nsupdate](https://en.wikipedia.org/wiki/Nsupdate)
+Each new provisioned VM will register itself in the DNS server using [nsupdate](https://en.wikipedia.org/wiki/Nsupdate).
 
+{{% notice info %}}
 The server is [knot](https://www.knot-dns.cz/).
+{{% /notice %}}

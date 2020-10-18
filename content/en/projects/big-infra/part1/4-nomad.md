@@ -2,14 +2,24 @@
 title: "4. Nomad"
 menuTitle: "4. Nomad"
 description: "Nomad"
-weight: 14
+weight: 4
 ---
 
 {{< toc >}}
 
+## What I want?
+
+I need [Nomad](https://www.nomadproject.io/) to orchestrate the deployments of my services. It will
+- manage them (deployments, updates, recoveries, etc)
+- register them in Consul (service + checks)
+
+There will be:
+- 3 agents in `server` mode forming the cluster, installed on the `stack` nodes
+- on all other nodes, the agents will be running in `client` mode
+
 ## Deployment
 
-[Nomad](https://www.nomadproject.io/) binaries are available from the main site or from many package managers.
+[Nomad](https://www.nomadproject.io/) binaries are available from the main site or from the packages' manager.
 
 For now, this is how we are going to configure each agent:
 - no ACLs
@@ -229,8 +239,7 @@ enable_syslog = true
 leave_on_interrupt = true
 leave_on_terminate = true
 log_level = "INFO"
-name = "bi-core-sbg-1"
-region = "eu"
+name = "<the node name>"
 server {
   bootstrap_expect = 3
   enabled = true
@@ -268,7 +277,7 @@ client {
   network_interface = "vio1"
   node_class = "prod"
   meta {
-    client_type = "edge"
+    client_type = "<put a type>"
   }
 }
 plugin "raw_exec" {
@@ -292,8 +301,7 @@ enable_syslog = true
 leave_on_interrupt = true
 leave_on_terminate = true
 log_level = "INFO"
-name = "bi-edge-sbg-2"
-region = "eu"
+name = "<the node name>"
 telemetry {
   collection_interval = "1s"
   disable_hostname = true
