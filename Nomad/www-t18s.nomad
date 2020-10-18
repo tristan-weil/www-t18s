@@ -48,6 +48,8 @@ job "www-t18s" {
     }
 
     task "docker-image" {
+      shutdown_delay = "20s"
+
       driver = "docker"
 
       config {
