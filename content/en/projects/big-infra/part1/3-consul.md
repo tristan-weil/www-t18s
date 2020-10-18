@@ -2,14 +2,23 @@
 title: "3. Consul"
 menuTitle: "3. Consul"
 description: "Consul"
-weight: 13
+weight: 3
 ---
 
 {{< toc >}}
 
+## What I want?
+
+I need [Consul](https://www.consul.io/) in order to have a service discovery infrastructure that can be used by 
+[Nomad](https://www.nomadproject.io).
+
+There will be:
+- 3 agents in `server` mode forming the cluster, installed on the `stack` nodes
+- on all other nodes, the agents will be running in `client` mode
+
 ## Deployment
 
-[Consul](https://www.consul.io/) binaries are available from the main site or from many package managers.
+[Consul](https://www.consul.io/) binaries are available from the main site or from the packages' manager.
 
 For now, this is how we are going to configure each agent:
 - no ACLs

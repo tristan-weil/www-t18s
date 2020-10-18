@@ -31,6 +31,12 @@ defaultContentLanguageInSubdir = false
 # params
 ####################
 
+[markup]
+    [markup.tableOfContents]
+    endLevel = 10
+    ordered = false
+    startLevel = 2
+
 [params]
 # Prefix URL to edit current page. Will display an "Edit this page" button on top right hand corner of every page.
 # Useful to give opportunity to people to create merge request for your doc.
@@ -96,7 +102,7 @@ weight = 12
 [[menu.shortcuts]]
 name = "<i class='fas fa-hand-spock'></i>&nbsp;finger @finger.t18s.fr"
 identifier = "finger"
-url = "finger://home@finger.t18s.fr"
+url = "telnet://home@finger.t18s.fr"
 weight = 13
 
 [[menu.shortcuts]]
