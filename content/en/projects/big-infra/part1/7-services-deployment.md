@@ -11,6 +11,27 @@ weight: 7
 
 The infrastructure should be running now: the last steps are to **deploy our services**.
 
+## Problems
+
+[traefik](https://www.traefik.io/) discovers the different services and nodes by requesting 
+[Consul]({{< relref "/projects/big-infra/part1/3-consul" >}}).
+The [refresh interval](https://doc.traefik.io/traefik/providers/consul-catalog/#refreshinterval) is set at 
+**15 seconds** by default.
+
+This means that [traefik](https://www.traefik.io/) will possibly be aware of a change only after **15 seconds** and will
+keep sending traffic during this interval.
+This can of course results in errors (as the service could have been migrated to another node or simply shutdown on this
+node, etc.).
+
+## Solutions
+
+We have to instruct [Nomad](https://www.nomadproject.io/) to delay the shutdown of an allocation after it has been seen
+by [traefik](https://www.traefik.io/).
+We will use this option:
+{{< highlight ini >}}
+shutdown_delay = "20s"
+{{< /highlight >}}
+
 ## The services
 
 ### Traefik
@@ -47,6 +68,8 @@ The different steps to deploy this website are:
             - to route the traffic
             - to apply middlewares and Let's Encrypt's certificates
         - using a random port (passed to the container using an environment variable)    
+
+You can also notice that 
 
 ## Run the jobs
 
