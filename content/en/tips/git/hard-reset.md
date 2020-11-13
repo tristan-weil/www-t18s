@@ -8,7 +8,6 @@ After a rebase on a remote branch (`force update`) from someone else, the local 
 resynchronization must be done.
 
 {{< highlight bash >}}
-$ git fetch
-# git reset --hard <repo name>/<branch name>
-$ git reset --hard origin/branch_name
+git fetch
+git reset --hard origin/branch_name
 {{< /highlight >}}
