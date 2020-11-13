@@ -53,7 +53,7 @@ job "www-t18s" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/tristan-weil/www-t18s/nginx:v0.0.6"
+        image = "ghcr.io/tristan-weil/www-t18s:v0.0.7"
 
         volumes = [
           "local:/etc/nginx/conf.d",
@@ -103,6 +103,7 @@ server {
     listen       {{ env "NOMAD_PORT_http" }};
     server_name  _;
 
+    root   /usr/share/nginx/html;
     include /etc/nginx/www/t18s.conf;
 }
 EOF

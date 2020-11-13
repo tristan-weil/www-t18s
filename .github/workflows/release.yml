@@ -1,6 +1,6 @@
 ---
 
-name: release
+name: Release
 
 on:
   push:
@@ -9,14 +9,13 @@ on:
 
 jobs:
   static-pages:
-    if: github.event.base_ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
     steps:
       - name: Get Hugo
         env:
-          HUGO_VERSION: 0.76.4
-          HUGO_CHECKSUM: 723d36ad66082d1beef80a750277aff58de71eaae2d0fca7df6de737eec64e26
+          HUGO_VERSION: 0.78.1
+          HUGO_CHECKSUM: e0d1b3ca30426931084dd6a0abb451be28f6a3dd23d85d87d272a1f95782912d
         run: |
           curl --output /tmp/hugo.tar.gz -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_Linux-64bit.tar.gz"
           echo "${HUGO_CHECKSUM}  /tmp/hugo.tar.gz" | sha256sum -c
@@ -53,15 +52,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Get the tag version
+        id: vars
+        run: |
+          echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+
       - name: Download results
         uses: actions/download-artifact@v2
         with:
           name: static-pages
           path: public
-
-      - name: Get the tag version
-        id: vars
-        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
 
       - name: Set up Docker Buildx
         id: buildx
@@ -75,7 +75,6 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Docker Build and Push
-        id: docker_build
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
@@ -84,5 +83,5 @@ jobs:
           push: true
           pull: true
           tags: |
-            ghcr.io/tristan-weil/www-t18s/nginx:latest
-            ghcr.io/tristan-weil/www-t18s/nginx:${{steps.vars.outputs.tag}}
+            ghcr.io/tristan-weil/www-t18s:latest
+            ghcr.io/tristan-weil/www-t18s:${{steps.vars.outputs.tag}}
