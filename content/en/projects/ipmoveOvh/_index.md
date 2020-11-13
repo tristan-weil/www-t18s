@@ -8,12 +8,11 @@ weight: 2
 
 {{< toc >}}
 
-{{< icon "fab fa-github" >}}&nbsp; [ipmoveOvh](https://github.com/tristan-weil/ipmoveOvh)
 
 ## What ?
 
-**ipmoveOvh** is a simple tool dedicated to move an OVH [FailOver IP](https://www.ovhcloud.com/en/bare-metal/ip/) 
-from one instance to another.
+{{< icon "fab fa-github" >}}&nbsp;[**ipmoveOvh**](https://github.com/tristan-weil/ipmoveOvh) is a simple tool
+dedicated to move an OVH [FailOver IP](https://www.ovhcloud.com/en/bare-metal/ip/) from one instance to another.
 
 It uses [go-ovh](https://github.com/ovh/go-ovh) and thus uses the [OVH API](https://api.ovh.com).
 
@@ -21,7 +20,7 @@ See the dedicated [Github](https://github.com/tristan-weil/ipmoveOvh) for more i
 
 ## Why ?
 
-For the [Big Infra]({{< relref "/projects/big-infra" >}}) project, I need to have 2 nodes in a Master/Backup 
+For the [Big Infra]({{< relref "/projects/big-infra" >}}) project, I need to have 2 nodes in a Master/Backup
 configuration to handle the incoming traffic **for only one public IP**.
 
 Because:
